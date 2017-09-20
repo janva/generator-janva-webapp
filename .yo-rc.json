@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "janne väisänen",
+      "authorEmail": "none",
+      "authorUrl": "none"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "mytemplateeng",
+  "version": "1.0.0",
+  "description": "a template engine",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.8.2",
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
+    "eslint-config-google": "^0.9.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-clean-css": "^3.8.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-less": "^3.3.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-wiredep": "^1.2.0"
+  },
+  "dependencies": {
+    "eslint": "^4.7.0"
+  }
+}
