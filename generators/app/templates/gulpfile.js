@@ -1,4 +1,5 @@
-//TODO:clean up
+// TODO:clean up for instance runsequnce seems to provide 
+// cleaner syntax than gulp.series....
 const appName = 'get from package.json would be nice';
 
 // file handling helpers
@@ -19,76 +20,77 @@ const prefix = require('gulp-autoprefixer');
 
 // bower dependency 
 const wiredep = require('gulp-wiredep');
+// const wiredep = require('wiredep').stream;
 
 // live reload in browser sync
 const bSync = require('browser-sync');
 const reload = bSync.reload;
 
-// TODO: concat, uglify, transpile babel
+// TODO: transpile babel
 // TODO: pump instead of pipe 
 gulp.task('js-scripts', () => {
-    return gulp.src('app/scripts/**/*.js')
-        // inject bower dependencies
-        .pipe(concat('main.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('dist'));
+  return gulp.src('app/scripts/**/*.js')
+    // inject bower dependencies
+    .pipe(concat('main.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
 });
 
 // using less 
 gulp.task('styles', () => {
-    return gulp.src('app/styles/**/*.less')
-        .pipe(less())
-        .pipe(minifyCSS({
-            compatibility: 'ie8',
-        }))
-        .pipe(prefix())
-        .pipe(gulp.dest('dist/styles'));
+  return gulp.src('app/styles/**/*.less')
+    .pipe(less())
+    .pipe(minifyCSS({
+      compatibility: 'ie8',
+    }))
+    .pipe(prefix())
+    .pipe(gulp.dest('dist/styles'));
 });
 
 // TODO: don't lint external dependencies
 //        --error reporting 
 //        --separte set of rules for dist files
 gulp.task('js-lint', () => {
-    return gulp.src(['**/*.js', '!node_modules/**', '!bower_components/**'])
-        .pipe(lintJs());
+  return gulp.src(['**/*.js', '!node_modules/**', '!bower_components/**'])
+    .pipe(lintJs());
 });
 gulp.task('clean', () => {
-    return del(['dist']);
+  return del(['dist']);
 });
 
 // just copy for know
 gulp.task('html', () => {
-    gulp.src('app/*.html')
-        .pipe(gulp.dest('dist'));
+  gulp.src('app/*.html')
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', function (done) {
-    bSync({
-        server: {
-            baseDir: ['dist', 'app'],
-        },
-    });
-    done();
+  bSync({
+    server: {
+      baseDir: ['dist', 'app'],
+    },
+  });
+  done();
 });
 
 gulp.task('default',
-    gulp.series('clean', 'js-lint',
-        gulp.parallel('styles', 'js-scripts'),
-        'serve',
-        function (done) {
-            gulp.watch(
-                ['app/scripts/**/*.js'],
-                gulp.parallel('js-scripts')
-            );
-            gulp.watch(
-                'app/styles/**/*.less',
-                gulp.parallel('styles')
-            );
-            gulp.watch(
-                'dist/**/*',
-                reload
-            );
-            done();
-        }
-    )
+  gulp.series('clean', 'js-lint',
+    gulp.parallel('styles', 'js-scripts'),
+    'serve',
+    function (done) {
+      gulp.watch(
+        ['app/scripts/**/*.js'],
+        gulp.parallel('js-scripts')
+      );
+      gulp.watch(
+        'app/styles/**/*.less',
+        gulp.parallel('styles')
+      );
+      gulp.watch(
+        'dist/**/*',
+        reload
+      );
+      done();
+    }
+  )
 );

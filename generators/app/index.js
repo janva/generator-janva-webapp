@@ -20,8 +20,9 @@ module.exports = class extends Generator {
     );
   }
 
+  // Inquiry 
   prompting() {
-    // Have Yeoman greet the user.
+    // Ascii art Yeoman .
     this.log(yosay(
       'Welcome to the remarkable ' + chalk.red('generator-janva-webapp') + ' generator!'
     ));
@@ -42,6 +43,7 @@ module.exports = class extends Generator {
     });
   }
 
+  // Write
   writing() {
     // Fixed parts
     this._cp('package.json', 'package.json');
@@ -56,7 +58,7 @@ module.exports = class extends Generator {
       title: this.props.title
     });
   }
-
+  // Install npm and bower dependencies (restorables/retrivalbes)
   install() {
     this.installDependencies();
   }
