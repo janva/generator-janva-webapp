@@ -1,6 +1,6 @@
 # generator-janva-webapp [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > simple webapp setup gulp bower vscode. under construction :-)
-<!--- 
+[//]: # ( 
 ## Installation
 
 First, install [Yeoman](http://yeoman.io) and generator-janva-webapp using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
@@ -24,8 +24,8 @@ yo janva-webapp
  * Feel free to [learn more about Yeoman](http://yeoman.io/).
 
 ## License
+)
 
--->
 MIT © [janne väisänen](none)
 
 
