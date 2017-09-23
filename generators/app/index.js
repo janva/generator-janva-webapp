@@ -28,11 +28,6 @@ module.exports = class extends Generator {
     ));
 
     const prompts = [{
-      type: 'confirm',
-      name: 'someAnswer',
-      message: 'Would you like to enable this option?',
-      default: true
-    }, {
       name: 'project-name',
       message: 'project name '
     }];
