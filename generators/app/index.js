@@ -48,9 +48,8 @@ module.exports = class extends Generator {
     // TODO: maybe  allow some options jquery, dash etc
     this._cp('bower.json', 'bower.json');
 
-    // Flexible parts
-    this.fs.copyTpl('index.html', 'app/index.html', {
-      title: this.props.title
+    this._cpTpl('index.html', 'app/index.html', {
+      title: this.props
     });
   }
   // Install npm and bower dependencies (restorables/retrivalbes)
