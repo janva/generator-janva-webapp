@@ -11,7 +11,7 @@ const gulp = require('gulp');
 // js-scripts
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
-const lintJs = require('gulp-eslint');
+const eslint = require('gulp-eslint');
 
 // style hmm  going for less
 const less = require('gulp-less');
@@ -27,7 +27,7 @@ const bSync = require('browser-sync');
 const reload = bSync.reload;
 
 // TODO: transpile babel
-// TODO: pump instead of pipe 
+// TODO: pump instead of pipe? 
 gulp.task('js-scripts', () => {
   return gulp.src('app/scripts/**/*.js')
     // inject bower dependencies
@@ -50,9 +50,9 @@ gulp.task('styles', () => {
 // TODO: don't lint external dependencies
 //        --error reporting 
 //        --separte set of rules for dist files
-gulp.task('js-lint', () => {
+gulp.task('lint:js', () => {
   return gulp.src(['**/*.js', '!node_modules/**', '!bower_components/**'])
-    .pipe(lintJs());
+    .pipe(eslint());
 });
 gulp.task('clean', () => {
   return del(['dist']);
@@ -64,7 +64,7 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('serve', function (done) {
+gulp.task('serve:dist', function (done) {
   bSync({
     server: {
       baseDir: ['dist', 'app'],
@@ -74,9 +74,9 @@ gulp.task('serve', function (done) {
 });
 
 gulp.task('default',
-  gulp.series('clean', 'js-lint',
+  gulp.series('clean', 'lint:js',
     gulp.parallel('styles', 'js-scripts'),
-    'serve',
+    'serve:dist',
     function (done) {
       gulp.watch(
         ['app/scripts/**/*.js'],
