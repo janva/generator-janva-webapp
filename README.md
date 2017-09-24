@@ -4,7 +4,7 @@
 Prerequisites : git, node, npm , yo (Yeoman)
 
 
-To try it out you need to have node and npm (which comes with node) installed on your system. Following links can be of help to get you started with node, npm and git.
+To try it out you need to have node and npm (which comes bundled with node) installed on your system. Following links can be of help to get you started with node, npm and git.
 
 * [Node](https://nodejs.org)
 * [Installing Node via package manager](https://nodejs.org/en/download/package-manager/)
@@ -17,7 +17,7 @@ Using npm you can install Yeoman toolset
 npm install -g yo
 ``` 
 
-If you get errors of the kind `EACCESS` or `EPERM`  you probably storing your node packages in folder accessible only by sudo. Using sudo to install packages, as workaround, is not recommended. Instead you can create a local folder for your own packages, add that folder to your path and set the npm prefix to that folder. If 
+If you get errors of the kind `EACCESS` or `EPERM`  you're probably storing your node packages in folder accessible only by sudo. Using sudo to install packages, as workaround, is not recommended. Instead you can create a local folder for your own packages, add that folder to your path and set the npm prefix to that folder. If 
 your not getting any error you can skip this step. Also it might be a good idea to back up your `.bashrc` file in your home  directory.
 
 ```bash 
@@ -26,10 +26,9 @@ npm set prefix ${HOME}/npm-global
 echo "export PATH=\${HOME}/npm-global/bin:\$PATH" >> \$HOME/.bashrc
 source .bashrc
 ``` 
-This might look more complicated than it actually is. The set prefix simply add the
-line `prefix= ~/npm-global` in your home directories `.npmrc` file and echo "export.. line append export PATH=${HOME}/npm-global/bin:$PATH at the end of your `.bashrc` file  in your home directory. The final line  `source .bashrc` just executes `.bashrc` file in current shell environment, so we don't have logout to make changes available. 
+This might look more complicated than it actually is. The set prefix simply adds the line `prefix= ~/npm-global` in your home directories `.npmrc` file. The echo "export.. line appends export PATH=${HOME}/npm-global/bin:$PATH at the end of your `.bashrc` file  in your home directory. The final line  `source .bashrc` just executes `.bashrc` file in current shell environment, so we don't have to logout to make changes available. 
 
-We are now ready to clone the project to folder in our local system. You could for instance as follows
+We are now ready to clone the project to folder in our local system. You could for instance execute the following lines.
 
 ```bash 
 mkdir ~/projects-folder
@@ -37,21 +36,20 @@ cd ~/projects-folder
 git clone  https://github.com/janva/generator-janva-webapp.git
 ``` 
 
-In order to make the generator globally available in your system we can ask npm to 
-link it.
+In order to make the generator globally available in your system we can ask npm to link it.
 
 ```bash 
 cd ~/projects-folder/generator-janva-webapp
 npm link
 ``` 
-npm link will create a symbolic link (symlink) in npm:s global node modules folder and make it point to location of this generator ie the to the folder you executed the command from. If your curios and want to see this is actually the cas you can execute the following commands
+`npm link` will create a symbolic link (symlink) in npm:s global node modules folder and make it point to location of this generator i.e the to the folder you executed the command from. If you're curios and want to see this is actually the case you can execute the following commands
 
 ```bash 
 cd $(npm -g root)
 ls -al | grep generator-janva-webapp 
 ``` 
 
-Finally time to scaffold a project. I will put it in the same directory where we cloned the project so we can easily remove everything later :-)..
+Finally time to scaffold a project. I will create a project in the same directory where we cloned the project so we can easily remove everything later :-)..
 
 ```bash 
 cd ~/project-folder
@@ -67,7 +65,6 @@ To remove the generator you want to remove the folder where the generator was cl
 ```bash 
 rm -rf ~/project-folder
 cd $(npm -g root)
-cd web-project
 rm generator-janva-webapp
 ``` 
 ---
