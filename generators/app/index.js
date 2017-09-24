@@ -28,7 +28,7 @@ module.exports = class extends Generator {
     ));
 
     const prompts = [{
-      name: 'project-name',
+      name: 'projectName',
       message: 'project name '
     }];
 
@@ -41,6 +41,7 @@ module.exports = class extends Generator {
   // Write
   writing() {
     // Fixed parts
+    this._cp('gulpfile.js', 'gulpfile.js');
     this._cp('package.json', 'package.json');
     this._cp('jsconfig.json', 'jsconfig.json');
     this._cp('.eslintrc.js', '.eslintrc.js');
@@ -49,7 +50,7 @@ module.exports = class extends Generator {
     this._cp('bower.json', 'bower.json');
 
     this._cpTpl('index.html', 'app/index.html', {
-      title: this.props
+      title: this.props.projectName
     });
   }
   // Install npm and bower dependencies (restorables/retrivalbes)
