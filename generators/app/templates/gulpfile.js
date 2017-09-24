@@ -8,7 +8,7 @@ const del = require('del');
 // gulp interface
 const gulp = require('gulp');
 
-// js-scripts
+// scripts:js
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const eslint = require('gulp-eslint');
@@ -28,7 +28,7 @@ const reload = bSync.reload;
 
 // TODO: transpile babel
 // TODO: pump instead of pipe? 
-gulp.task('js-scripts', () => {
+gulp.task('scripts:js', () => {
   return gulp.src('app/scripts/**/*.js')
     // inject bower dependencies
     .pipe(concat('main.min.js'))
@@ -75,12 +75,12 @@ gulp.task('serve:dist', function (done) {
 
 gulp.task('default',
   gulp.series('clean', 'lint:js',
-    gulp.parallel('styles', 'js-scripts'),
+    gulp.parallel('styles', 'scripts:js'),
     'serve:dist',
     function (done) {
       gulp.watch(
         ['app/scripts/**/*.js'],
-        gulp.parallel('js-scripts')
+        gulp.parallel('scripts:js')
       );
       gulp.watch(
         'app/styles/**/*.less',
