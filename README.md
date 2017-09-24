@@ -4,6 +4,8 @@
 Prerequisites : git, node, npm , yo (Yeoman)
 
 
+## Installing Prerequisites 
+
 To try it out you need to have node and npm (which comes bundled with node) installed on your system. Following links can be of help to get you started with node, npm and git.
 
 * [Node](https://nodejs.org)
@@ -28,6 +30,8 @@ source .bashrc
 ``` 
 This might look more complicated than it actually is. The set prefix simply adds the line `prefix= ~/npm-global` in your home directories `.npmrc` file. The echo "export.. line appends export PATH=${HOME}/npm-global/bin:$PATH at the end of your `.bashrc` file  in your home directory. The final line  `source .bashrc` just executes `.bashrc` file in current shell environment, so we don't have to logout to make changes available. 
 
+## Cloning project
+
 We are now ready to clone the project to folder in our local system. You could for instance execute the following lines.
 
 ```bash 
@@ -35,6 +39,7 @@ mkdir ~/projects-folder
 cd ~/projects-folder
 git clone  https://github.com/janva/generator-janva-webapp.git
 ``` 
+## Linking generator
 
 In order to make the generator globally available in your system we can ask npm to link it.
 
@@ -48,6 +53,7 @@ npm link
 cd $(npm -g root)
 ls -al | grep generator-janva-webapp 
 ``` 
+## Scaffolding project 
 
 Finally time to scaffold a project. I will create a project in the same directory where we cloned the project so we can easily remove everything later :-)..
 
@@ -57,6 +63,7 @@ mkdir web-project
 cd web-project
 yo janva-webapp
 ``` 
+Answer question(S) and you should be good to go.
 
 ## Removing installation and cleaning up generator
 
