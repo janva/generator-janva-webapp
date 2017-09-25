@@ -45,7 +45,7 @@ module.exports = class extends Generator {
     this._cp('package.json', 'package.json');
     this._cp('jsconfig.json', 'jsconfig.json');
     this._cp('.eslintrc.js', '.eslintrc.js');
-    this._cp('.gitignore', '.gitignore');
+    this._cp('_gitignore', '.gitignore');
     this._cp('main.less', 'app/styles/main.less');
     this._cp('main.js', 'app/scripts/main.js');
     // TODO: maybe  allow some options jquery, dash etc
