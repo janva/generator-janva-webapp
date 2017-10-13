@@ -31,7 +31,7 @@ const reload = bSync.reload;
 gulp.task('scripts:js', () => {
   // Inject bower dependencies
   let jsFilesGlob = mainBowerFiles('**/*.js');
-  //add non vendor scripts
+  // Add non vendor scripts
   jsFilesGlob.push('/app/scripts/**/*.js');
 
   return gulp.src(jsFilesGlob)
@@ -45,7 +45,7 @@ gulp.task('styles', () => {
   return gulp.src('app/styles/**/*.less')
     .pipe(less())
     .pipe(minifyCSS({
-      compatibility: 'ie8',
+      compatibility: 'ie8'
     }))
     .pipe(prefix())
     .pipe(gulp.dest('dist/styles'));
@@ -55,7 +55,12 @@ gulp.task('styles', () => {
 //        --error reporting 
 //        --separte set of rules for dist files
 gulp.task('lint:js', () => {
-  return gulp.src(['**/*.js', '!node_modules/**', '!bower_components/**'])
+  return gulp.src(
+      ['**/*.js', '!node_modules/**',
+        '!bower_components/**'
+      ], {
+        since: gulp.lastRun('lint:js')
+      })
     .pipe(eslint());
 });
 gulp.task('clean', () => {
