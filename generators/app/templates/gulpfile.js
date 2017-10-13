@@ -34,7 +34,9 @@ gulp.task('scripts:js', () => {
   // Add non vendor scripts
   jsFilesGlob.push('/app/scripts/**/*.js');
 
-  return gulp.src(jsFilesGlob)
+  return gulp.src(jsFilesGlob, {
+      since: gulp.lastRun('scripts:js')
+    })
     .pipe(concat('main.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
