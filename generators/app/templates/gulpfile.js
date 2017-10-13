@@ -26,8 +26,27 @@ const mainBowerFiles = require('main-bower-files');
 const bSync = require('browser-sync');
 const reload = bSync.reload;
 
+// Incremental builds 
+const cached = require('gulp-cached');
+const remember = require('gulp-remember');
+
+gulp.task('lint:js', () => {
+  return gulp.src(
+      ['**/*.js', '!node_modules/**',
+        '!bower_components/**'
+      ], {
+        since: gulp.lastRun('lint:js')
+      })
+    .pipe(eslint());
+});
+
 // TODO: transpile babel
 // TODO: pump instead of pipe? 
+// Gulp 4 introduces timestamps (Second arg to src)
+// which compares files timestamp and includes it 
+// only if newer the task last run 
+// introduced build cache. Build cache select files
+// based on changes in content not mearly on timestamp. 
 gulp.task('scripts:js', () => {
   // Inject bower dependencies
   let jsFilesGlob = mainBowerFiles('**/*.js');
@@ -37,9 +56,14 @@ gulp.task('scripts:js', () => {
   return gulp.src(jsFilesGlob, {
       since: gulp.lastRun('scripts:js')
     })
-    .pipe(concat('main.min.js'))
+    // Only include files newer than those in cache
+    .pipe(cached('jsscripts/ugly'))
     .pipe(uglify())
-    .pipe(gulp.dest('dist'));
+    // All files needed at concat stage so pull all 
+    // files from cache
+    .pipe(remember('jsscripts/ugly'))
+    .pipe(concat('main.min.js'))
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 // Using less 
@@ -56,15 +80,6 @@ gulp.task('styles', () => {
 // TODO: don't lint external dependencies
 //        --error reporting 
 //        --separte set of rules for dist files
-gulp.task('lint:js', () => {
-  return gulp.src(
-      ['**/*.js', '!node_modules/**',
-        '!bower_components/**'
-      ], {
-        since: gulp.lastRun('lint:js')
-      })
-    .pipe(eslint());
-});
 gulp.task('clean', () => {
   return del(['dist']);
 });
