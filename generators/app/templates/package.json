@@ -1,7 +1,7 @@
 {
-  "name": "mytemplateeng",
+  "name": "myapp",
   "version": "1.0.0",
-  "description": "a template engine",
+  "description": "a descriptio",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,10 +15,12 @@
     "eslint-config-google": "^0.9.1",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^4.0.0",
+    "gulp-cached": "^1.1.1",
     "gulp-clean-css": "^3.8.0",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^4.0.0",
     "gulp-less": "^3.3.2",
+    "gulp-remember": "^0.3.1",
     "gulp-uglify": "^3.0.0",
     "main-bower-files": "^2.13.1"
   },
