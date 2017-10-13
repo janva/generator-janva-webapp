@@ -19,7 +19,8 @@ const minifyCSS = require('gulp-clean-css');
 const prefix = require('gulp-autoprefixer');
 
 // Bower dependency 
-const wiredep = require('gulp-wiredep');
+const mainBowerFiles = require('main-bower-files');
+// const wiredep = require('gulp-wiredep');
 // Const wiredep = require('wiredep').stream;
 
 // live reload in browser sync
@@ -30,7 +31,10 @@ const reload = bSync.reload;
 // TODO: pump instead of pipe? 
 gulp.task('scripts:js', () => {
   return gulp.src('app/scripts/**/*.js')
-    // Inject bower dependencies
+  // Inject bower dependencies
+  let jsFilesGlob = mainBowerFiles('**/*.js');
+  //add non vendor scripts
+  jsFilesGlob.push('/app/scripts/**/*.js')
     .pipe(concat('main.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
@@ -74,7 +78,7 @@ gulp.task('serve:dist', function (done) {
 });
 
 gulp.task('default',
-  gulp.series('clean', 'lint:js',
+  gulp.series('clean', 'lint:js'
     gulp.parallel('styles', 'scripts:js'),
     'serve:dist',
     function (done) {
