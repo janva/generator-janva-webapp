@@ -2,25 +2,25 @@
 // cleaner syntax than gulp.series....
 const appName = 'get from package.json would be nice';
 
-// file handling helpers
+// File handling helpers
 const del = require('del');
 
-// gulp interface
+// Gulp interface
 const gulp = require('gulp');
 
-// scripts:js
+// Scripts:js
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const eslint = require('gulp-eslint');
 
-// style hmm  going for less
+// Style hmm  going for less
 const less = require('gulp-less');
 const minifyCSS = require('gulp-clean-css');
 const prefix = require('gulp-autoprefixer');
 
-// bower dependency 
+// Bower dependency 
 const wiredep = require('gulp-wiredep');
-// const wiredep = require('wiredep').stream;
+// Const wiredep = require('wiredep').stream;
 
 // live reload in browser sync
 const bSync = require('browser-sync');
@@ -30,13 +30,13 @@ const reload = bSync.reload;
 // TODO: pump instead of pipe? 
 gulp.task('scripts:js', () => {
   return gulp.src('app/scripts/**/*.js')
-    // inject bower dependencies
+    // Inject bower dependencies
     .pipe(concat('main.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
 });
 
-// using less 
+// Using less 
 gulp.task('styles', () => {
   return gulp.src('app/styles/**/*.less')
     .pipe(less())
@@ -58,7 +58,7 @@ gulp.task('clean', () => {
   return del(['dist']);
 });
 
-// just copy for know
+// Just copy for know
 gulp.task('html', () => {
   gulp.src('app/*.html')
     .pipe(gulp.dest('dist'));
@@ -67,8 +67,8 @@ gulp.task('html', () => {
 gulp.task('serve:dist', function (done) {
   bSync({
     server: {
-      baseDir: ['dist', 'app'],
-    },
+      baseDir: ['dist', 'app']
+    }
   });
   done();
 });
