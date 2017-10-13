@@ -4,6 +4,8 @@ const appName = 'get from package.json would be nice';
 
 // File handling helpers
 const del = require('del');
+const slash = reuire('slash');
+const path = reuire('path');
 
 // Gulp interface
 const gulp = require('gulp');
@@ -29,6 +31,17 @@ const reload = bSync.reload;
 // Incremental builds 
 const cached = require('gulp-cached');
 const remember = require('gulp-remember');
+
+//watch changes to my scripts
+const watcher = gulp.watch(['app/scripts/**/*.js'], gulp.parallel('scripts:js'));
+// highjack watcher to synchronize cache with removal of files on disc
+//
+// listen to unlink event which fires on filedeletion 
+// when file is removed from disc remove it from cache (need to remove it from both plugins) 
+watcher.on('unlink', (filepath) => {
+  delete cached.caches['jsscripts/ugly'][slash(path.join(__dirname, filepath))];
+  remember.forget('jsscripts/ugly', slash(path.join(__dirname, filepath)))
+});
 
 gulp.task('lint:js', () => {
   return gulp.src(
