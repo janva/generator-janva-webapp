@@ -60,7 +60,6 @@ gulp.task('scripts:js', () => {
   let jsFilesGlob = mainBowerFiles('**/*.js');
   // Add non vendor scripts
   jsFilesGlob.push('app/scripts/**/*.js');
-  console.log('glob: ' + jsFilesGlob);
   return gulp.src(jsFilesGlob, {
       since: gulp.lastRun('scripts:js'),
     })
@@ -117,7 +116,6 @@ const watcher = gulp.watch(['app/scripts/**/*.js'],
 // When file is removed from disc remove it from cache
 // (need to remove it from both plugins) 
 watcher.on('unlink', (filepath) => {
-  console.log('run unlink');
   delete cached.caches['jsuglies'][slash(path.join(__dirname, filepath))];
   remember.forget('jsuglies', slash(path.join(__dirname, filepath)));
 });
