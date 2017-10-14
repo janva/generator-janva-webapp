@@ -2,13 +2,14 @@
 // cleaner syntax than gulp.series....
 const appName = 'get from package.json would be nice';
 
+// Gulp interface
+const gulp = require('gulp');
+
+
 // File handling helpers
 const del = require('del');
 const slash = require('slash');
 const path = require('path');
-
-// Gulp interface
-const gulp = require('gulp');
 
 // Scripts:js
 const uglify = require('gulp-uglify');
@@ -22,6 +23,9 @@ const prefix = require('gulp-autoprefixer');
 
 // Bower dependency 
 const mainBowerFiles = require('main-bower-files');
+// no need to wire any more since all js bundled in single 
+// file which we serve from as well. Still effective since 
+// using timestamps and build cache
 // const wiredep = require('gulp-wiredep');
 
 // live reload in browser sync
@@ -35,6 +39,31 @@ const remember = require('gulp-remember');
 // Unuglified sources in dev tools
 const sourcemaps = require('gulp-sourcemaps');
 
+
+// command line arguments --env=prod
+const args = require('yargs').argv;
+
+// Separate  production build from dev build (--env=prod)
+let isprod = (args.env === 'prod');
+
+// Noop will allow use to skips stages when we 
+// build to deploy  production  hmm noop assembler 
+// desing pattern null object in command pattern...
+const through = require('through2');
+
+const noop = () => {
+  return through.obj();
+};
+// hmm so return "emtpy" pipe if isprod = true
+// allows to skip stage for production
+const dev = function (task) {
+  return isprod ? noop() : task;
+};
+
+// This is just the negation of dev
+const prod = (task) => {
+  return isprod ? task : noop();
+};
 // TODO: don't lint external dependencies
 //        --error reporting 
 //        --separte set of rules for dist files
@@ -63,7 +92,7 @@ gulp.task('scripts:js', () => {
   return gulp.src(jsFilesGlob, {
       since: gulp.lastRun('scripts:js'),
     })
-    .pipe(sourcemaps.init())
+    .pipe(dev(sourcemaps.init()))
     // Only include files newer than those in cache
     .pipe(cached('jsuglies'))
     .pipe(uglify())
@@ -71,9 +100,9 @@ gulp.task('scripts:js', () => {
     // files from cache
     .pipe(remember('jsuglies'))
     .pipe(concat('main.min.js'))
-    .pipe(sourcemaps.write('.', {
+    .pipe(dev(sourcemaps.write('.', {
       sourceRoot: 'js-source',
-    }))
+    })))
     .pipe(gulp.dest('dist/scripts'));
 });
 
@@ -99,44 +128,52 @@ gulp.task('html', () => {
 });
 
 gulp.task('serve:dist', function (done) {
-  bSync({
-    server: {
-      baseDir: ['dist', 'app'],
-    },
-  });
+  // Don't serve when runing deployment
+  if (!isprod) {
+    bSync({
+      server: {
+        baseDir: ['dist', 'app'],
+      },
+    });
+  }
   done();
 });
 
-// watch changes to my scripts
-const watcher = gulp.watch(['app/scripts/**/*.js'],
-  gulp.parallel('scripts:js'));
-// highjack watcher to synchronize cache with removal of files on disc
-//
-// listen to unlink event which fires on filedeletion 
-// When file is removed from disc remove it from cache
-// (need to remove it from both plugins) 
-watcher.on('unlink', (filepath) => {
-  delete cached.caches['jsuglies'][slash(path.join(__dirname, filepath))];
-  remember.forget('jsuglies', slash(path.join(__dirname, filepath)));
-});
+//TODO fixme a bit no elegant...
+if (!prod) {
+  // watch changes to my scripts
+  const watcher = gulp.watch(['app/scripts/**/*.js'],
 
+    gulp.parallel('scripts:js'));
+  // Highjack watcher to synchronize cache with removal 
+  // of files on disc
+  // listen to unlink event which fires on file deletion 
+  // When file is removed from disc remove it from cache
+  // (need to remove it from both plugins) 
+  watcher.on('unlink', (filepath) => {
+    delete cached.caches['jsuglies'][slash(path.join(__dirname, filepath))];
+    remember.forget('jsuglies', slash(path.join(__dirname, filepath)));
+  });
+}
 gulp.task('default',
   gulp.series('clean', 'lint:js',
     gulp.parallel('styles', 'scripts:js'),
     'serve:dist',
     function (done) {
-      gulp.watch(
-        ['app/scripts/**/*.js'],
-        gulp.parallel('scripts:js')
-      );
-      gulp.watch(
-        'app/styles/**/*.less',
-        gulp.parallel('styles')
-      );
-      gulp.watch(
-        'dist/**/*',
-        reload
-      );
+      if (!isprod) {
+        gulp.watch(
+          ['app/scripts/**/*.js'],
+          gulp.parallel('scripts:js')
+        );
+        gulp.watch(
+          'app/styles/**/*.less',
+          gulp.parallel('styles')
+        );
+        gulp.watch(
+          'dist/**/*',
+          reload
+        );
+      }
       done();
     }
   )

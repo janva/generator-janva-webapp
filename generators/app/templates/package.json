@@ -23,9 +23,12 @@
     "gulp-remember": "^0.3.1",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
-    "main-bower-files": "^2.13.1"
+    "main-bower-files": "^2.13.1",
+    "slash": "^1.0.0",
+    "yargs": "^9.0.1",
   },
   "dependencies": {
-    "eslint": "^4.7.0"
+    "eslint": "^4.7.0",
+    "through2": "^2.0.3"
   }
 }
